@@ -5,10 +5,12 @@
  */
 package com.erhannis.exasystem.architecture;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author erhannis
  */
 public class ExaSystem {
-  
+  public ArrayList<ExaHost> hosts = new ArrayList<>();
 }

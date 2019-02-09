@@ -5,10 +5,13 @@
  */
 package com.erhannis.exasystem.architecture;
 
+import lombok.Data;
+
 /**
  *
  * @author erhannis
  */
+@Data
 public class HardwareRegister {
-  
+  public final String name;
 }

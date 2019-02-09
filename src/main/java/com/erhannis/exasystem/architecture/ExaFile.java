@@ -5,10 +5,17 @@
  */
 package com.erhannis.exasystem.architecture;
 
+import com.erhannis.exasystem.code.argument.ExaNumber;
+import com.erhannis.exasystem.code.argument.ExaValue;
+import java.util.ArrayList;
+import lombok.Data;
+
 /**
  *
  * @author erhannis
  */
+@Data
 public class ExaFile {
-  
+  public final ExaNumber id;
+  public ArrayList<ExaValue> data = new ArrayList<>();
 }

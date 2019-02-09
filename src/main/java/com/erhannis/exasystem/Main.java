@@ -15,6 +15,7 @@ import com.erhannis.exasystem.code.Mark;
 import com.erhannis.exasystem.code.argument.ExaNumber;
 import com.erhannis.exasystem.code.argument.Label;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -26,11 +27,11 @@ public class Main {
   }
   
   public static void test() {
-    Exa xa = new Exa();
     ArrayList<Instruction> code = new ArrayList<>();
     code.add(new Copy(new ExaNumber(0), BuiltInRegisters.X));
     code.add(new Mark(new Label("LOOP")));
     code.add(new Addi(BuiltInRegisters.X, new ExaNumber(1), BuiltInRegisters.X));
     code.add(new Jump(new Label("LOOP")));
+    Exa xa = new Exa(UUID.randomUUID().toString(), code);
   }
 }
