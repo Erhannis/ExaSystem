@@ -19,6 +19,7 @@ import com.erhannis.exasystem.code.Mark;
 import com.erhannis.exasystem.code.argument.ExaNumber;
 import com.erhannis.exasystem.code.argument.Label;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 import jcsp.lang.Barrier;
 import jcsp.lang.CSTimer;
@@ -34,6 +35,12 @@ public class Main {
     test();
   }
 
+  /**
+   *
+   * @param syncBarrier
+   * @param processes
+   * @return
+   */
   public static ExaSystem tecRedshift(Barrier syncBarrier, Parallel processes) {
     ExaSystem system = new ExaSystem(syncBarrier);
     ExaHost input = new ExaHost(syncBarrier, "INPUT", 20);
@@ -48,12 +55,12 @@ public class Main {
     system.hosts.add(core);
     system.hosts.add(side2);
     system.hosts.add(sound);
-    
+
     input.registers.add(new HardwareRegister("PADX"));
     input.registers.add(new HardwareRegister("PADY"));
     input.registers.add(new HardwareRegister("PADB"));
     input.registers.add(new HardwareRegister("EN3D"));
-    
+
     sound.registers.add(new HardwareRegister("SQR0"));
     sound.registers.add(new HardwareRegister("SQR1"));
     sound.registers.add(new HardwareRegister("TRI0"));
@@ -63,58 +70,59 @@ public class Main {
     core.links.add(new ExaLink(new ExaNumber(801), sound));
     core.links.add(new ExaLink(new ExaNumber(802), side1));
     core.links.add(new ExaLink(new ExaNumber(803), side2));
-    
+
     input.links.add(new ExaLink(new ExaNumber(-1), core));
     sound.links.add(new ExaLink(new ExaNumber(-1), core));
     side1.links.add(new ExaLink(new ExaNumber(-1), core));
     side2.links.add(new ExaLink(new ExaNumber(-1), core));
-    
+
     //TODO I don't yet know how we're going to code register effects.
-    
     processes.addProcess(system);
     processes.addProcess(input);
     processes.addProcess(side1);
     processes.addProcess(core);
     processes.addProcess(side2);
     processes.addProcess(sound);
-    
+
     return system;
   }
-  
+
   public static void test() {
     Barrier syncBarrier = new Barrier();
     Parallel processes = new Parallel();
     ExaSystem redshift = tecRedshift(syncBarrier, processes);
-    
+
     ArrayList<Instruction> xaCode = new ArrayList<>();
-    xaCode.add(new Copy(new ExaNumber(0), BuiltInRegisters.X));
-    xaCode.add(new Mark(new Label("LOOP")));
-    xaCode.add(new Addi(BuiltInRegisters.X, new ExaNumber(1), BuiltInRegisters.X));
+    HashMap<String, Integer> xaLabels = new HashMap<>();
+    xaCode.add(new Copy(new ExaNumber(1), BuiltInRegisters.X));
+    xaLabels.put("LOOP", 1);
+    xaCode.add(new Addi(BuiltInRegisters.X, BuiltInRegisters.X, BuiltInRegisters.X));
     xaCode.add(new Jump(new Label("LOOP")));
-    Exa xa = new Exa(syncBarrier, UUID.randomUUID().toString(), xaCode);
-    
+    Exa xa = new Exa(syncBarrier, UUID.randomUUID().toString(), xaCode, xaLabels);
+
     ArrayList<Instruction> xbCode = new ArrayList<>();
     Exa xb = new Exa(syncBarrier, UUID.randomUUID().toString(), xbCode);
 
     processes.addProcess(xa);
     processes.addProcess(xb);
-    
+
     // Manually adding an EXA to a host isn't a good idea under normal circumstances, but if you're doing setup and know where things are, it's prolly fine
     redshift.hosts.stream().filter(h -> "CORE".equals(h.name)).findAny().get().exas.add(xa);
     redshift.hosts.stream().filter(h -> "CORE".equals(h.name)).findAny().get().exas.add(xb);
     //TODO May need to add the host to the EXA, as well
-    
+
     // Idle timer
-    syncBarrier.enroll();
-    processes.addProcess(() -> {
-      CSTimer timer = new CSTimer();
-      while (true) {
-        timer.sleep(1000);
-        syncBarrier.sync();
-      }
-    });
+    if (1==1) {
+      syncBarrier.enroll();
+      processes.addProcess(() -> {
+        CSTimer timer = new CSTimer();
+        while (true) {
+          timer.sleep(500);
+          syncBarrier.sync();
+        }
+      });
+    }
 
     processes.run();
   }
 }
-

@@ -5,6 +5,7 @@
  */
 package com.erhannis.exasystem.code;
 
+import com.erhannis.exasystem.architecture.Exa;
 import lombok.Data;
 
 /**
@@ -14,4 +15,10 @@ import lombok.Data;
  */
 @Data
 public class Sync implements Instruction {
+
+  @Override
+  public Result execute(Exa exa) {
+    //TODO
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
 }

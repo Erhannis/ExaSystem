@@ -5,6 +5,8 @@
  */
 package com.erhannis.exasystem.code;
 
+import com.erhannis.exasystem.architecture.Exa;
+import com.erhannis.exasystem.code.errors.ExaException;
 import lombok.Data;
 
 /**
@@ -13,4 +15,9 @@ import lombok.Data;
  */
 @Data
 public class VoidF implements Instruction {
+
+  @Override
+  public Result execute(Exa exa) throws ExaException {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
 }

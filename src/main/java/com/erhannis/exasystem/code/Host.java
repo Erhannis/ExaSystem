@@ -5,8 +5,10 @@
  */
 package com.erhannis.exasystem.code;
 
+import com.erhannis.exasystem.architecture.Exa;
 import com.erhannis.exasystem.architecture.registers.Register;
 import com.erhannis.exasystem.code.argument.ExaValuedArgument;
+import com.erhannis.exasystem.code.errors.ExaException;
 import lombok.Data;
 
 /**
@@ -16,4 +18,9 @@ import lombok.Data;
 @Data
 public class Host implements Instruction {
   public final Register a;
+
+  @Override
+  public Result execute(Exa exa) throws ExaException {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
 }

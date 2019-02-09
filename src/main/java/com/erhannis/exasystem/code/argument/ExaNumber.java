@@ -5,6 +5,7 @@
  */
 package com.erhannis.exasystem.code.argument;
 
+import com.erhannis.exasystem.Constants;
 import lombok.Data;
 
 /**
@@ -14,4 +15,10 @@ import lombok.Data;
 @Data
 public class ExaNumber implements ExaValue, ExaValuedArgument {
   public final int value;
+  
+  public ExaNumber(int value) {
+    value = Math.max(Constants.MIN_INT, value);
+    value = Math.min(Constants.MAX_INT, value);
+    this.value = value;
+  }
 }

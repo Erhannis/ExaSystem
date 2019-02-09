@@ -16,5 +16,6 @@ import lombok.Data;
 public class ExaLink {
   public final ExaNumber id;
   //TODO Note that if a host goes away, the link needs to go away, too.  And I don't know how.
+  //TODO Note also that I'm not sure what to do in the case of remote hosts.
   public final ExaHost target;
 }
