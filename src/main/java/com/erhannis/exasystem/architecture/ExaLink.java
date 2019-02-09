@@ -5,10 +5,16 @@
  */
 package com.erhannis.exasystem.architecture;
 
+import com.erhannis.exasystem.code.argument.ExaNumber;
+import lombok.Data;
+
 /**
  *
  * @author erhannis
  */
+@Data
 public class ExaLink {
-  
+  public final ExaNumber id;
+  //TODO Note that if a host goes away, the link needs to go away, too.  And I don't know how.
+  public final ExaHost target;
 }
